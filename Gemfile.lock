@@ -300,6 +300,9 @@ GEM
       fugit (~> 1.11.0)
       railties (>= 7.1)
       thor (~> 1.3.1)
+    spring (4.3.0)
+    spring-commands-rspec (1.0.4)
+      spring (>= 0.9.1)
     sshkit (1.24.0)
       base64
       logger
@@ -350,6 +353,8 @@ DEPENDENCIES
   solid_cable
   solid_cache
   solid_queue
+  spring
+  spring-commands-rspec
   thruster
   tzinfo-data
 

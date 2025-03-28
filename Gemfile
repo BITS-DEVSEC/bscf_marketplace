@@ -53,4 +53,8 @@ group :development, :test do
   gem "database_cleaner-active_record"
   gem "simplecov", require: false
   gem "rspec-retry"
+
+  # Speed up test runs
+  gem "spring"
+  gem "spring-commands-rspec"
 end
