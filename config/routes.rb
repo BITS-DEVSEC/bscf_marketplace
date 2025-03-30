@@ -9,4 +9,5 @@ Rails.application.routes.draw do
   resources :products
   resources :request_for_quotations
   resources :rfq_items
+  resources :quotations
 end
