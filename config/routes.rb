@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   resources :categories
   resources :products
   resources :request_for_quotations
+  resources :rfq_items
 end
