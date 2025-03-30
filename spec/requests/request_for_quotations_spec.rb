@@ -5,7 +5,7 @@ RSpec.describe 'RequestForQuotations', type: :request do
     {
       user_id: create(:user).id,
       status: 0,
-      notes: "Sample RFQ notes",
+      notes: "Sample RFQ notes"
     }
   end
 

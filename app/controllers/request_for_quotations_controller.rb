@@ -9,6 +9,6 @@ class RequestForQuotationsController < ApplicationController
 
   def permitted_params
     # Add your permitted params here
-    [:user_id, :status, :notes]
+    [ :user_id, :status, :notes ]
   end
 end

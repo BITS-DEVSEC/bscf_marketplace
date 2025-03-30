@@ -15,7 +15,7 @@ RSpec.describe 'Products', type: :request do
     {
       sku: nil,
       description: nil,
-      category_id: create(:category).id,
+      category_id: create(:category).id
     }
   end
 

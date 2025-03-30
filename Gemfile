@@ -3,7 +3,7 @@ source "https://rubygems.org"
 gem "rails", "~> 8.0.2"
 gem "pg", "~> 1.1"
 gem "puma", ">= 5.0"
-gem 'bscf-core', '~> 0.2.0'
+gem "bscf-core", "~> 0.2.0"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
@@ -22,7 +22,7 @@ gem "kamal", require: false
 # Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
 gem "thruster", require: false
 
-gem 'active_model_serializers'
+gem "active_model_serializers"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
@@ -52,5 +52,4 @@ group :development, :test do
   # Speed up test runs
   gem "spring"
   gem "spring-commands-rspec"
-
 end

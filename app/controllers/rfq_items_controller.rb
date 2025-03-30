@@ -9,6 +9,6 @@ class RfqItemsController < ApplicationController
 
   def permitted_params
     # Add your permitted params here
-    [ :request_for_quotation_id, :product_id, :quantity, :notes]
+    [ :request_for_quotation_id, :product_id, :quantity, :notes ]
   end
 end

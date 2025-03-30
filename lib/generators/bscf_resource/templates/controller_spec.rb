@@ -1,6 +1,6 @@
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe '<%= class_name.pluralize %>', type: :request do
+RSpec.describe "<%= class_name.pluralize %>", type: :request do
   let(:valid_attributes) do
     {
       # Add your valid attributes here
@@ -19,5 +19,5 @@ RSpec.describe '<%= class_name.pluralize %>', type: :request do
     }
   end
 
-  include_examples 'request_shared_spec', '<%= plural_name %>', 7
+  include_examples "request_shared_spec", "<%= plural_name %>", 7
 end

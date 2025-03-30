@@ -1,4 +1,4 @@
-class QuotationItemsController < ApplicationController
+class OrderItemsController < ApplicationController
   include Common
 
   private
@@ -9,12 +9,11 @@ class QuotationItemsController < ApplicationController
 
   def permitted_params
     [
-      :quotation_id,
-      :rfq_item_id,
+      :order_id,
       :product_id,
+      :quotation_item_id,
       :quantity,
       :unit_price,
-      :unit,
       :subtotal
     ]
   end

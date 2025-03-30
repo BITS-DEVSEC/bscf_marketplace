@@ -9,6 +9,6 @@ class ProductsController < ApplicationController
 
   def permitted_params
     # Add your permitted params here
-    [:sku, :name, :description, :category_id, :base_price]
+    [ :sku, :name, :description, :category_id, :base_price ]
   end
 end

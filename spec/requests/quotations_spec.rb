@@ -9,7 +9,7 @@ RSpec.describe 'Quotations', type: :request do
       delivery_date: Date.tomorrow,
       valid_until: 1.week.from_now,
       status: 0,
-      notes: "Sample quotation notes",
+      notes: "Sample quotation notes"
     }
   end
 

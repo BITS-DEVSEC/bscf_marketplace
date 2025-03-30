@@ -8,7 +8,7 @@ RSpec.describe 'Orders', type: :request do
       quotation_id: create(:quotation).id,
       order_type: 0,
       status: 0,
-      total_amount: 1500.50,
+      total_amount: 1500.50
     }
   end
 

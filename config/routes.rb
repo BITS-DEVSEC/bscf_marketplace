@@ -12,4 +12,5 @@ Rails.application.routes.draw do
   resources :quotations
   resources :quotation_items
   resources :orders
+  resources :order_items
 end
