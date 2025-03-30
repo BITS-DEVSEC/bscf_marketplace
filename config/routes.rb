@@ -11,4 +11,5 @@ Rails.application.routes.draw do
   resources :rfq_items
   resources :quotations
   resources :quotation_items
+  resources :orders
 end
