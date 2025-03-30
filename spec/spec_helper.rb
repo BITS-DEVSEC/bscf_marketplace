@@ -1,6 +1,6 @@
 require "simplecov"
 require "./spec/support/models/shared_examples"
-# require "./spec/support/requests/shared_requests"
+require "./spec/support/requests/shared_requests"
 require "rspec/retry"
 
 RSpec.configure do |config|

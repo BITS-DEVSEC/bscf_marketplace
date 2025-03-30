@@ -1,7 +1,7 @@
 module Bscf
   module Core
     RSpec.shared_examples "request_shared_spec" do |controller, field_count, exclude = []|
-      include Comee::Core::Engine.routes.url_helpers
+      include Bscf::Core::Engine.routes.url_helpers
 
       let(:factory) { controller.classify.underscore.to_sym }
       let(:clazz) { "Bscf::Core::#{controller.classify}".constantize }
