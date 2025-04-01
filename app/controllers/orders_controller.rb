@@ -1,5 +1,15 @@
 class OrdersController < ApplicationController
   include Common
+  before_action :is_authenticated
+
+  def my_orders
+    @orders = Bscf::Core::Order.where(ordered_by: current_user)
+    if @orders.empty?
+      render json: { success: false, error: "No orders found" }, status: :not_found
+      return
+    end
+    render json: { success: true, data: @orders, status: :ok }
+  end
 
   private
 
