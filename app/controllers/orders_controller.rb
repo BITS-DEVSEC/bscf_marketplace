@@ -8,7 +8,8 @@ class OrdersController < ApplicationController
       render json: { success: false, error: "No orders found" }, status: :not_found
       return
     end
-    render json: { success: true, data: @orders, status: :ok }
+    @order_items = Bscf::Core::OrderItem.where(order_id: @orders.pluck(:id))
+    render json: { success: true, orders: @orders, order_items: @order_items, status: :ok }
   end
 
   private

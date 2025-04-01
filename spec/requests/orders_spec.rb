@@ -39,17 +39,23 @@ RSpec.describe 'Orders', type: :request do
 
     context "when user has orders" do
       let!(:user_orders) { create_list(:order, 3, ordered_by: user) }
+      let!(:order_items) { user_orders.map { |order| create_list(:order_item, 2, order: order) }.flatten }
       let!(:other_user_orders) { create_list(:order, 2) }
 
-      it "returns only the current user orders" do
+      it "returns only the current user orders and their items" do
         get "/orders/my_orders", headers: headers
 
         expect(response).to have_http_status(:ok)
         json_response = JSON.parse(response.body)
 
         expect(json_response["success"]).to be true
-        expect(json_response["data"].length).to eq(3)
-        expect(json_response["data"].pluck("ordered_by_id")).to all(eq(user.id))
+        expect(json_response["orders"].length).to eq(3)
+        expect(json_response["orders"].pluck("ordered_by_id")).to all(eq(user.id))
+        expect(json_response["order_items"].length).to eq(6) # 3 orders × 2 items each
+
+
+        returned_order_ids = json_response["order_items"].pluck("order_id").uniq.sort
+        expect(returned_order_ids).to match_array(user_orders.pluck(:id))
       end
     end
 
