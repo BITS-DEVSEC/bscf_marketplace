@@ -12,7 +12,11 @@ Rails.application.routes.draw do
 
   resources :categories
   resources :products
-  resources :request_for_quotations
+  resources :request_for_quotations do
+    collection do
+      get :my_rfqs
+    end
+  end
   resources :rfq_items
   resources :quotations
   resources :quotation_items
