@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_27_112412) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_31_113323) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -43,6 +43,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_27_112412) do
     t.bigint "parent_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "bscf_core_marketplace_listings", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "listing_type", null: false
+    t.integer "status", null: false
+    t.boolean "allow_partial_match", default: false, null: false
+    t.datetime "preferred_delivery_date"
+    t.datetime "expires_at"
+    t.boolean "is_active", default: true
+    t.bigint "address_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["address_id"], name: "index_bscf_core_marketplace_listings_on_address_id"
+    t.index ["user_id"], name: "index_bscf_core_marketplace_listings_on_user_id"
   end
 
   create_table "bscf_core_order_items", force: :cascade do |t|
@@ -220,6 +235,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_27_112412) do
   end
 
   add_foreign_key "bscf_core_businesses", "bscf_core_users", column: "user_id"
+  add_foreign_key "bscf_core_marketplace_listings", "bscf_core_addresses", column: "address_id"
+  add_foreign_key "bscf_core_marketplace_listings", "bscf_core_users", column: "user_id"
   add_foreign_key "bscf_core_order_items", "bscf_core_orders", column: "order_id"
   add_foreign_key "bscf_core_order_items", "bscf_core_products", column: "product_id"
   add_foreign_key "bscf_core_order_items", "bscf_core_quotation_items", column: "quotation_item_id"
