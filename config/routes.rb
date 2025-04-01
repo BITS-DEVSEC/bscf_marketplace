@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   resources :orders do
     collection do
       get :my_orders
+      post :create_with_items
     end
   end
   resources :order_items
