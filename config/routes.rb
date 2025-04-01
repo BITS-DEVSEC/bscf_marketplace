@@ -18,7 +18,11 @@ Rails.application.routes.draw do
     end
   end
   resources :rfq_items
-  resources :quotations
+  resources :quotations do
+    collection do
+      get :my_quotations
+    end
+  end
   resources :quotation_items
   resources :orders do
     collection do
