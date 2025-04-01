@@ -85,4 +85,100 @@ RSpec.describe 'Orders', type: :request do
 
 
   include_examples 'request_shared_spec', 'orders', 9
+  describe "POST /orders/create_with_items" do
+    let!(:user) { create(:user) }
+    let!(:role) { create(:role) }
+    let!(:user_role) { create(:user_role, user: user, role: role) }
+    let!(:token) { Bscf::Core::TokenService.new.encode({ user: { id: user.id }, role: { name: role.name } }) }
+    let!(:headers) do
+      { Authorization: "Bearer #{token}" }
+    end
+
+    let(:ordered_to) { create(:user) }
+    let(:product) { create(:product) }
+
+    context "with valid parameters" do
+      let(:valid_order_params) do
+        {
+          order: {
+            ordered_to_id: ordered_to.id,
+            order_type: 0,
+            status: 0,
+            total_amount: 3000.0
+          },
+          order_items: [
+            {
+              product_id: product.id,
+              quantity: 2,
+              unit_price: 1500.0,
+              subtotal: 3000.0
+            }
+          ]
+        }
+      end
+
+      it "creates a new order with items" do
+        expect {
+          post create_with_items_orders_path,
+            params: valid_order_params,
+            headers: headers,
+            as: :json
+        }.to change(Bscf::Core::Order, :count).by(1)
+          .and change(Bscf::Core::OrderItem, :count).by(1)
+
+        expect(response).to have_http_status(:created)
+        json_response = JSON.parse(response.body)
+
+        expect(json_response["success"]).to be true
+        expect(json_response["order"]["ordered_by_id"]).to eq(user.id)
+        expect(json_response["order_items"].length).to eq(1)
+        expect(json_response["order_items"][0]["product_id"]).to eq(product.id)
+      end
+    end
+
+    context "with invalid parameters" do
+      let(:invalid_order_params) do
+        {
+          order: {
+            ordered_to_id: nil,
+            order_type: nil,
+            status: nil,
+            total_amount: nil
+          },
+          order_items: [
+            {
+              product_id: nil,
+              quantity: nil,
+              unit_price: nil,
+              subtotal: nil
+            }
+          ]
+        }
+      end
+
+      it "does not create order and returns error" do
+        expect {
+          post create_with_items_orders_path,
+            params: invalid_order_params,
+            headers: headers,
+            as: :json
+        }.to change(Bscf::Core::Order, :count).by(0)
+          .and change(Bscf::Core::OrderItem, :count).by(0)
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        json_response = JSON.parse(response.body)
+        expect(json_response["success"]).to be false
+        expect(json_response["errors"]).to be_present
+      end
+    end
+
+    context "when user is not authenticated" do
+      it "returns unauthorized status" do
+        post create_with_items_orders_path,
+          params: { order: {}, order_items: [] },
+          as: :json
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+  end
 end
