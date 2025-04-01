@@ -91,7 +91,7 @@ GEM
       msgpack (~> 1.2)
     brakeman (7.0.0)
       racc
-    bscf-core (0.2.5)
+    bscf-core (0.3.0)
       active_model_serializers
       ancestry (~> 4.1.0)
       bcrypt (~> 3.1)
@@ -412,7 +412,7 @@ DEPENDENCIES
   active_model_serializers
   bootsnap
   brakeman
-  bscf-core (~> 0.2.0)
+  bscf-core (~> 0.3.0)
   database_cleaner-active_record
   debug
   factory_bot_rails
