@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  resources :marketplace_listings do
+    collection do
+      get :my_marketplace_listings
+    end
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -7,10 +12,23 @@ Rails.application.routes.draw do
 
   resources :categories
   resources :products
-  resources :request_for_quotations
+  resources :request_for_quotations do
+    collection do
+      get :my_rfqs
+    end
+  end
   resources :rfq_items
-  resources :quotations
+  resources :quotations do
+    collection do
+      get :my_quotations
+    end
+  end
   resources :quotation_items
-  resources :orders
+  resources :orders do
+    collection do
+      get :my_orders
+      post :create_with_items
+    end
+  end
   resources :order_items
 end
