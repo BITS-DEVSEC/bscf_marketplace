@@ -6,10 +6,10 @@ class RequestForQuotationsController < ApplicationController
   private
 
   def permitted_params
-    [:status, :notes]
+    [ :status, :notes ]
   end
 
   def permitted_item_params
-    [:product_id, :quantity, :notes]
+    [ :product_id, :quantity, :notes ]
   end
 end
