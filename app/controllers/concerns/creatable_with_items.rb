@@ -32,11 +32,11 @@ module CreatableWithItems
   private
 
   def model_class
-    controller_name.classify.constantize
+    "Bscf::Core::#{controller_name.classify}".constantize
   end
 
   def items_association
-    "#{controller_name.singularize}_items"
+    "Bscf::Core::#{controller_name.singularize}_items"
   end
 
   def main_params
@@ -44,7 +44,7 @@ module CreatableWithItems
   end
 
   def items_params
-    params.require("#{controller_name.singularize}_items").map do |item|
+    params.require("Bscf::Core::#{controller_name.singularize}_items").map do |item|
       item.permit(permitted_item_params)
     end
   end

@@ -4,7 +4,7 @@ RSpec.describe 'RequestForQuotations', type: :request do
   let(:valid_attributes) do
     {
       user_id: create(:user).id,
-      status: "draft",
+      status: :draft,
       notes: "Sample RFQ notes"
     }
   end
@@ -19,7 +19,6 @@ RSpec.describe 'RequestForQuotations', type: :request do
 
   let(:new_attributes) do
     {
-      status: "submitted",
       notes: "Updated notes"
     }
   end

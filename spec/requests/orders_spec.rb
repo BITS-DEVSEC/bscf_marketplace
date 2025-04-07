@@ -14,17 +14,13 @@ RSpec.describe 'Orders', type: :request do
 
   let(:invalid_attributes) do
     {
-      ordered_by_id: nil,
-      ordered_to_id: nil,
-      order_type: nil,
-      status: nil
     }
   end
 
   let(:new_attributes) do
     {
-      status: "submitted",
-      total_amount: 2000.00
+      status: :submitted,
+      total_amount: Faker::Number.decimal(l_digits: 5)
     }
   end
 

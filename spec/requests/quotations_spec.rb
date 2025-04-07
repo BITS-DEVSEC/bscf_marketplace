@@ -5,7 +5,7 @@ RSpec.describe 'Quotations', type: :request do
     {
       request_for_quotation_id: create(:request_for_quotation).id,
       business_id: create(:business).id,
-      price: 1500.50,
+      price: Faker::Commerce.price,
       delivery_date: Date.tomorrow,
       valid_until: 1.week.from_now,
       status: 0,
@@ -25,7 +25,7 @@ RSpec.describe 'Quotations', type: :request do
 
   let(:new_attributes) do
     {
-      price: 2000.00,
+      price: Faker::Commerce.price,
       delivery_date: 2.days.from_now,
       notes: "Updated quotation notes"
     }

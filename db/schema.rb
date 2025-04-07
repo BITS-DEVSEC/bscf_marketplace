@@ -10,9 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_31_113323) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_03_194629) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum"
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
 
   create_table "bscf_core_addresses", force: :cascade do |t|
     t.string "city"
@@ -23,6 +51,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_31_113323) do
     t.string "house_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "bscf_core_business_documents", force: :cascade do |t|
+    t.bigint "business_id", null: false
+    t.string "document_number", null: false
+    t.string "document_name", null: false
+    t.string "document_description"
+    t.datetime "verified_at"
+    t.boolean "is_verified", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["business_id"], name: "index_bscf_core_business_documents_on_business_id"
   end
 
   create_table "bscf_core_businesses", force: :cascade do |t|
@@ -234,6 +274,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_31_113323) do
     t.index ["user_id"], name: "index_bscf_core_virtual_accounts_on_user_id"
   end
 
+  create_table "bscf_core_wholesaler_products", force: :cascade do |t|
+    t.bigint "business_id", null: false
+    t.bigint "product_id", null: false
+    t.integer "minimum_order_quantity", default: 1, null: false
+    t.decimal "wholesale_price"
+    t.integer "available_quantity", default: 0, null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["business_id"], name: "index_bscf_core_wholesaler_products_on_business_id"
+    t.index ["product_id"], name: "index_bscf_core_wholesaler_products_on_product_id"
+  end
+
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "bscf_core_business_documents", "bscf_core_businesses", column: "business_id"
   add_foreign_key "bscf_core_businesses", "bscf_core_users", column: "user_id"
   add_foreign_key "bscf_core_marketplace_listings", "bscf_core_addresses", column: "address_id"
   add_foreign_key "bscf_core_marketplace_listings", "bscf_core_users", column: "user_id"
@@ -260,4 +316,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_31_113323) do
   add_foreign_key "bscf_core_virtual_account_transactions", "bscf_core_virtual_accounts", column: "from_account_id"
   add_foreign_key "bscf_core_virtual_account_transactions", "bscf_core_virtual_accounts", column: "to_account_id"
   add_foreign_key "bscf_core_virtual_accounts", "bscf_core_users", column: "user_id"
+  add_foreign_key "bscf_core_wholesaler_products", "bscf_core_businesses", column: "business_id"
+  add_foreign_key "bscf_core_wholesaler_products", "bscf_core_products", column: "product_id"
 end
