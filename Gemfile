@@ -53,4 +53,4 @@ group :development, :test do
   gem "spring-commands-rspec"
 end
 
-gem "bscf-core", "~> 0.3.1"
+gem "bscf-core", "~> 0.3.3"
