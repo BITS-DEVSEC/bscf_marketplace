@@ -1,6 +1,7 @@
 module Common
   extend ActiveSupport::Concern
   include Pagination
+  include Filterable
 
   included do
     before_action :set_clazz
@@ -22,6 +23,9 @@ module Common
     else
       data = @clazz.all
     end
+
+    data = filter_records(data) if params[:q].present?
+
     total = data.count
     data = data.then(&paginate) if params[:page]
     result = {
