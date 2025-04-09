@@ -31,4 +31,10 @@ Rails.application.routes.draw do
     end
   end
   resources :order_items
+
+  resources :wholesaler_products do
+    collection do
+      post :find_best_wholesalers
+    end
+  end
 end
