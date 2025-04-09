@@ -21,6 +21,10 @@ class QuotationsController < ApplicationController
 
   private
 
+  def model_params
+    params.require(:payload).permit(permitted_params)
+  end
+
   def permitted_params
     [
       :request_for_quotation_id,

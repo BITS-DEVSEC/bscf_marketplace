@@ -2,7 +2,7 @@ class RequestForQuotationsController < ApplicationController
   include Common
   include CreatableWithItems
   before_action :is_authenticated
-  
+
   def my_rfqs
     @rfqs = Bscf::Core::RequestForQuotation.where(user: current_user)
     if @rfqs.empty?
@@ -15,8 +15,12 @@ class RequestForQuotationsController < ApplicationController
 
   private
 
+  def model_params
+    params.require(:payload).permit(permitted_params)
+  end
+
   def permitted_params
-    [ :status, :notes ]
+    [ :user_id, :status, :notes ]
   end
 
   def permitted_item_params

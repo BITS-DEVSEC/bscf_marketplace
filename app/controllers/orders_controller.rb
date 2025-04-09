@@ -15,6 +15,10 @@ class OrdersController < ApplicationController
 
   private
 
+  def model_params
+    params.require(:payload).permit(permitted_params).merge(ordered_by_id: current_user.id)
+  end
+
   def permitted_params
     [
       :ordered_to_id,
