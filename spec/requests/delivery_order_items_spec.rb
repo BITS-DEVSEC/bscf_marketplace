@@ -1,23 +1,32 @@
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe "DeliveryOrderItems", type: :request do
   let(:valid_attributes) do
     {
-      # Add your valid attributes here
+      delivery_order_id: create(:delivery_order).id,
+      order_item_id: create(:order_item).id,
+      product_id: create(:product).id,
+      quantity: 5,
+      status: 0,
+      notes: "Test notes"
     }
   end
 
   let(:invalid_attributes) do
     {
-      # Add your invalid attributes here
+      delivery_order_id: nil,
+      order_item_id: nil,
+      product_id: nil,
+      quantity: nil,
+      status: nil
     }
   end
 
   let(:new_attributes) do
     {
-      # Add your new attributes here
+      notes: "Updated notes"
     }
   end
 
-  include_examples "request_shared_spec", "delivery_order_items", 7
+  include_examples 'request_shared_spec', 'delivery_order_items', 9
 end

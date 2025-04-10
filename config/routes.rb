@@ -42,8 +42,8 @@ Rails.application.routes.draw do
       get :my_business
     end
   end
+  resources :delivery_order_items
   resources :delivery_orders do
-    resources :delivery_order_items, shallow: true
     member do
       put :assign_driver
       put :start_delivery
@@ -52,6 +52,8 @@ Rails.application.routes.draw do
     collection do
       get :my_deliveries
       get :assigned_deliveries
+      get :daily_aggregates
+      get :monthly_aggregates
     end
   end
 end
