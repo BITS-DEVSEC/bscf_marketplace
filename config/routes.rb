@@ -42,4 +42,20 @@ Rails.application.routes.draw do
       get :my_business
     end
   end
+  resources :delivery_order_items
+  resources :delivery_orders do
+    member do
+      put :assign_driver
+      put :start_delivery
+      put :complete_delivery
+    end
+    collection do
+      get :my_deliveries
+      get :assigned_deliveries
+      get :daily_aggregates
+      get :monthly_aggregates
+    end
+  end
+
+  resources :vehicles
 end
