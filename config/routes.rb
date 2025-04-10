@@ -44,5 +44,14 @@ Rails.application.routes.draw do
   end
   resources :delivery_orders do
     resources :delivery_order_items, shallow: true
+    member do
+      put :assign_driver
+      put :start_delivery
+      put :complete_delivery
+    end
+    collection do
+      get :my_deliveries
+      get :assigned_deliveries
+    end
   end
 end
