@@ -56,4 +56,6 @@ Rails.application.routes.draw do
       get :monthly_aggregates
     end
   end
+
+  resources :vehicles
 end
