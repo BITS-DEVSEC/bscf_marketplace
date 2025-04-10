@@ -42,4 +42,7 @@ Rails.application.routes.draw do
       get :my_business
     end
   end
+  resources :delivery_orders do
+    resources :delivery_order_items, shallow: true
+  end
 end
