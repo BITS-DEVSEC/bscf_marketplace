@@ -37,4 +37,9 @@ Rails.application.routes.draw do
       post :find_best_wholesalers
     end
   end
+  resources :businesses do
+    collection do
+      get :my_business
+    end
+  end
 end
