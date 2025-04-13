@@ -4,7 +4,8 @@ class DeliveryOrdersController < ApplicationController
   before_action :set_delivery_order, only: [ :assign_driver, :start_delivery, :complete_delivery ]
 
   def my_deliveries
-    @delivery_orders = Bscf::Core::DeliveryOrder.where(driver_id: current_user.id)
+    @delivery_orders = Bscf::Core::DeliveryOrder.includes(:order, :driver, :dropoff_address, :pickup_address)
+                                             .where(driver_id: current_user.id)
     if @delivery_orders.empty?
       render json: { success: false, error: "No deliveries found" }, status: :not_found
       return
@@ -66,7 +67,7 @@ class DeliveryOrdersController < ApplicationController
   end
 
   def start_delivery
-    if @delivery_order.update(status: :in_transit, delivery_start_time: Time.current)
+    if @delivery_order.update(status: :picked_up, delivery_start_time: Time.current)
       render json: { success: true, data: @delivery_order }, status: :ok
     else
       render json: { success: false, error: @delivery_order.errors.full_messages }, status: :unprocessable_entity
@@ -74,7 +75,7 @@ class DeliveryOrdersController < ApplicationController
   end
 
   def complete_delivery
-    if @delivery_order.update(status: :delivered, delivery_end_time: Time.current, actual_delivery_time: Time.current)
+    if @delivery_order.update(status: :delivered, delivery_end_time: Time.current)
       render json: { success: true, data: @delivery_order }, status: :ok
     else
       render json: { success: false, error: @delivery_order.errors.full_messages }, status: :unprocessable_entity
