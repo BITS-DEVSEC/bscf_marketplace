@@ -58,7 +58,7 @@ class DeliveryOrdersController < ApplicationController
   end
 
   def assign_driver
-    if @delivery_order.update(driver_id: params[:payload][:driver_id])
+    if @delivery_order.update(driver_id: params[:payload][:driver_id], status: :in_transit)
       render json: { success: true, data: @delivery_order }, status: :ok
     else
       render json: { success: false, error: @delivery_order.errors.full_messages }, status: :unprocessable_entity
