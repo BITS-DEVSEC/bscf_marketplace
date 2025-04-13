@@ -18,6 +18,14 @@ module Ransackable
           attributes: %w[sku name description base_price category_id],
           associations: %w[category order_items quotation_items rfq_items]
         },
+        "DeliveryOrder" => {
+          attributes: %w[order_id driver_id dropoff_address_id pickup_address_id driver_phone buyer_phone seller_phone delivery_notes estimated_delivery_time delivery_start_time delivery_end_time actual_delivery_time delivery_price status],
+          associations: %w[order driver dropoff_address pickup_address delivery_order_items]
+        },
+        "DeliveryOrderItem" => {
+          attributes: %w[delivery_order_id order_item_id product_id quantity status notes],
+          associations: %w[delivery_order order_item product]
+        },
         "Category" => {
           attributes: %w[name description parent_id],
           associations: %w[products parent children]
