@@ -58,4 +58,10 @@ Rails.application.routes.draw do
   end
 
   resources :vehicles
+  
+  resources :business_documents do
+    collection do
+      get :my_business_documents
+    end
+  end
 end
