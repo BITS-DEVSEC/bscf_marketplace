@@ -66,7 +66,7 @@ class DeliveryOrdersController < ApplicationController
   end
 
   def start_delivery
-    if @delivery_order.update(status: :in_progress, delivery_start_time: Time.current)
+    if @delivery_order.update(status: :in_transit, delivery_start_time: Time.current)
       render json: { success: true, data: @delivery_order }, status: :ok
     else
       render json: { success: false, error: @delivery_order.errors.full_messages }, status: :unprocessable_entity
