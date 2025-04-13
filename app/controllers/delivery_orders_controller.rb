@@ -10,7 +10,7 @@ class DeliveryOrdersController < ApplicationController
       render json: { success: false, error: "No deliveries found" }, status: :not_found
       return
     end
-    render json: { success: true, data: @delivery_orders }, status: :ok
+    render json: { success: true, data: @delivery_orders }, status: :ok, each_serializer: DeliveryOrderSerializer
   end
 
   def assigned_deliveries
@@ -60,7 +60,7 @@ class DeliveryOrdersController < ApplicationController
 
   def assign_driver
     if @delivery_order.update(driver_id: params[:payload][:driver_id], status: :in_transit)
-      render json: { success: true, data: @delivery_order }, status: :ok
+      render json: { success: true, data: @delivery_order }, status: :ok, serializer: DeliveryOrderSerializer
     else
       render json: { success: false, error: @delivery_order.errors.full_messages }, status: :unprocessable_entity
     end
