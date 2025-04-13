@@ -27,5 +27,5 @@ RSpec.describe 'Products', type: :request do
     }
   end
 
-  include_examples 'request_shared_spec', 'products', 9
+  include_examples 'request_shared_spec', 'products', 11
 end

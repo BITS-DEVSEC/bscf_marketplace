@@ -1,6 +1,6 @@
 class BusinessDocumentSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
-  
+
   attributes :id,
              :business_id,
              :document_number,

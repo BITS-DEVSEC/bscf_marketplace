@@ -25,7 +25,7 @@ RSpec.describe "BusinessDocuments", type: :request do
   let(:new_attributes) do
     {
       document_name: "Updated License",
-      document_description: "Updated description",
+      document_description: "Updated description"
     }
   end
 
@@ -67,5 +67,5 @@ RSpec.describe "BusinessDocuments", type: :request do
     end
   end
 
-  include_examples "request_shared_spec", "business_documents", 10, [:create]
+  include_examples "request_shared_spec", "business_documents", 10, [ :create ]
 end
