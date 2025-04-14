@@ -1,7 +1,7 @@
 class DeliveryOrdersController < ApplicationController
   include Common
   before_action :is_authenticated
-  before_action :set_delivery_order, only: [ :assign_driver, :start_delivery, :complete_delivery ]
+  before_action :set_delivery_order, only: [ :assign_driver, :start_delivery, :complete_delivery, :cancel ]
 
   def my_deliveries
     @delivery_orders = Bscf::Core::DeliveryOrder.includes(:order, :driver, :dropoff_address, :pickup_address)
@@ -76,6 +76,19 @@ class DeliveryOrdersController < ApplicationController
 
   def complete_delivery
     if @delivery_order.update(status: :delivered, delivery_end_time: Time.current)
+      render json: { success: true, data: @delivery_order }, status: :ok
+    else
+      render json: { success: false, error: @delivery_order.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def cancel
+    if @delivery_order.status == "delivered"
+      render json: { success: false, error: "Cannot cancel a delivered order" }, status: :unprocessable_entity
+      return
+    end
+
+    if @delivery_order.update(status: :cancelled, driver_id: nil)
       render json: { success: true, data: @delivery_order }, status: :ok
     else
       render json: { success: false, error: @delivery_order.errors.full_messages }, status: :unprocessable_entity
