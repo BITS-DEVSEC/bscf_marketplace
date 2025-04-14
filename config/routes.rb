@@ -45,6 +45,7 @@ Rails.application.routes.draw do
   resources :delivery_order_items
   resources :delivery_orders do
     member do
+      patch :cancel
       put :assign_driver
       put :start_delivery
       put :complete_delivery
