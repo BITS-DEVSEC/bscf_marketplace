@@ -88,7 +88,7 @@ class DeliveryOrdersController < ApplicationController
       return
     end
 
-    if @delivery_order.update(status: :cancelled, driver_id: nil)
+    if @delivery_order.update(status: :pending, driver_id: nil)
       render json: { success: true, data: @delivery_order }, status: :ok
     else
       render json: { success: false, error: @delivery_order.errors.full_messages }, status: :unprocessable_entity
