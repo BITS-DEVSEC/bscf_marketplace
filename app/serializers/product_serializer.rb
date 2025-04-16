@@ -8,13 +8,13 @@ class ProductSerializer < ActiveModel::Serializer
 
   def thumbnail_url
     if object.thumbnail.attached?
-      object.thumbnail.blob.service.url(object.thumbnail.key)
+      object.thumbnail.url
     end
   end
 
   def image_urls
     if object.images.attached?
-      object.images.map { |image| image.blob.service.url(image.key) }
+      object.images.map(&:url)
     else
       []
     end
