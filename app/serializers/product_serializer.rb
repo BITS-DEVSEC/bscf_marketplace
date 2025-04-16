@@ -8,13 +8,17 @@ class ProductSerializer < ActiveModel::Serializer
 
   def thumbnail_url
     if object.thumbnail.attached?
-      object.thumbnail.url
+      ActiveStorage::Current.set(url_options: { host: 'snf.bitscollege.edu.et', protocol: 'https', script_name: '/marketplace' }) do
+        object.thumbnail.url
+      end
     end
   end
 
   def image_urls
     if object.images.attached?
-      object.images.map(&:url)
+      ActiveStorage::Current.set(url_options: { host: 'snf.bitscollege.edu.et', protocol: 'https', script_name: '/marketplace' }) do
+        object.images.map(&:url)
+      end
     else
       []
     end
