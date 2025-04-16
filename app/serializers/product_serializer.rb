@@ -8,13 +8,13 @@ class ProductSerializer < ActiveModel::Serializer
 
   def thumbnail_url
     if object.thumbnail.attached?
-      rails_blob_url(object.thumbnail)
+      rails_blob_url(object.thumbnail, host: 'snf.bitscollege.edu.et', protocol: 'https', script_name: '/marketplace')
     end
   end
 
   def image_urls
     if object.images.attached?
-      object.images.map { |image| rails_blob_url(image) }
+      object.images.map { |image| rails_blob_url(image, host: 'snf.bitscollege.edu.et', protocol: 'https', script_name: '/marketplace') }
     else
       []
     end
