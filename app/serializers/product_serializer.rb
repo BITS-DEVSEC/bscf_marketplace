@@ -8,13 +8,13 @@ class ProductSerializer < ActiveModel::Serializer
 
   def thumbnail_url
     if object.thumbnail.attached?
-      rails_blob_url(object.thumbnail, only_path: true)
+      rails_blob_url(object.thumbnail)
     end
   end
 
   def image_urls
     if object.images.attached?
-      object.images.map { |image| rails_blob_url(image, only_path: true) }
+      object.images.map { |image| rails_blob_url(image) }
     else
       []
     end
