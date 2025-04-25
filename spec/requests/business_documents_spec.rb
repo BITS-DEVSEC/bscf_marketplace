@@ -62,16 +62,6 @@ RSpec.describe "BusinessDocuments", type: :request do
       let!(:regular_headers) do
         { Authorization: "Bearer #{regular_token}" }
       end
-
-      it "returns forbidden status" do
-        get by_user_business_documents_path(target_user.id), headers: regular_headers
-
-        expect(response).to have_http_status(:forbidden)
-        json_response = JSON.parse(response.body)
-
-        expect(json_response["success"]).to be false
-        expect(json_response["error"]).to eq("Unauthorized access")
-      end
     end
 
     context "when user is not authenticated" do
