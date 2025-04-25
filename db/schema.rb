@@ -115,6 +115,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_10_181146) do
     t.string "buyer_phone", null: false
     t.string "seller_phone", null: false
     t.datetime "actual_delivery_time"
+    t.float "delivery_price"
     t.index ["driver_id"], name: "index_bscf_core_delivery_orders_on_driver_id"
     t.index ["dropoff_address_id"], name: "index_bscf_core_delivery_orders_on_dropoff_address_id"
     t.index ["order_id"], name: "index_bscf_core_delivery_orders_on_order_id"
