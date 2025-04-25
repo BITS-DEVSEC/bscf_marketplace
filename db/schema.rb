@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_10_181148) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_25_055419) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -115,7 +115,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_10_181148) do
     t.string "buyer_phone", null: false
     t.string "seller_phone", null: false
     t.datetime "actual_delivery_time"
-    t.decimal "delivery_price", precision: 10, scale: 2, default: "0.0", null: false
+    t.float "delivery_price"
     t.index ["driver_id"], name: "index_bscf_core_delivery_orders_on_driver_id"
     t.index ["dropoff_address_id"], name: "index_bscf_core_delivery_orders_on_dropoff_address_id"
     t.index ["order_id"], name: "index_bscf_core_delivery_orders_on_order_id"
@@ -264,9 +264,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_10_181148) do
     t.string "first_name", null: false
     t.string "middle_name", null: false
     t.string "last_name", null: false
-    t.string "email", null: false
+    t.string "email"
     t.string "phone_number", null: false
-    t.string "password_digest", null: false
+    t.string "password_digest", limit: 60, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_bscf_core_users_on_email", unique: true
