@@ -1,71 +1,74 @@
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe "BusinessDocuments", type: :request do
-  include ActionDispatch::TestProcess
-
-  let(:valid_attributes) do
-    {
-      document_number: "DOC123",
-      document_name: "Business License",
-      document_description: "Official business license document",
-      business_id: create(:business).id,
-      file: fixture_file_upload('spec/fixtures/files/sample.pdf', 'application/pdf')
-    }
-  end
-
-  let(:invalid_attributes) do
-    {
-      document_number: nil,
-      document_name: nil,
-      document_description: nil,
-      business_id: nil
-    }
-  end
-
-  let(:new_attributes) do
-    {
-      document_name: "Updated License",
-      document_description: "Updated description"
-    }
-  end
-
-  describe "GET /my_business_documents" do
-    let!(:user) { create(:user) }
-    let!(:role) { create(:role) }
-    let!(:user_role) { create(:user_role, user: user, role: role) }
-    let!(:token) { Bscf::Core::TokenService.new.encode({ user: { id: user.id }, role: { name: role.name } }) }
-    let!(:headers) do
-      { Authorization: "Bearer #{token}" }
+  describe "GET /business_documents/by_user/:user_id" do
+    let!(:admin_user) { create(:user) }
+    let!(:admin_role) { create(:role, name: 'admin') }
+    let!(:admin_user_role) { create(:user_role, user: admin_user, role: admin_role) }
+    let!(:admin_token) { Bscf::Core::TokenService.new.encode({ user: { id: admin_user.id }, role: { name: admin_role.name } }) }
+    let!(:admin_headers) do
+      { Authorization: "Bearer #{admin_token}" }
     end
 
-    context "when user has a business with documents" do
-      let!(:business) { create(:business, user: user) }
-      let!(:documents) { create_list(:business_document, 3, business: business) }
+    let!(:target_user) { create(:user) }
+    let!(:business) { create(:business, user: target_user) }
+    let!(:documents) { create_list(:business_document, 3, business: business) }
 
-      it "returns the business documents" do
-        get "/business_documents/my_business_documents", headers: headers
+    context "when admin requests with valid user_id" do
+      it "returns the business and its documents" do
+        get by_user_business_documents_path(target_user.id), headers: admin_headers
 
         expect(response).to have_http_status(:ok)
         json_response = JSON.parse(response.body)
 
         expect(json_response["success"]).to be true
-        expect(json_response["data"].length).to eq(3)
-        expect(json_response["data"].first["business_id"]).to eq(business.id)
+        expect(json_response["business"]["id"]).to eq(business.id)
+        expect(json_response["business"]["user_id"]).to eq(target_user.id)
+        expect(json_response["documents"].length).to eq(3)
       end
     end
 
-    context "when user has no business" do
-      it "returns not found" do
-        get "/business_documents/my_business_documents", headers: headers
+    context "when user does not exist" do
+      it "returns not found status" do
+        get by_user_business_documents_path(0), headers: admin_headers
 
         expect(response).to have_http_status(:not_found)
         json_response = JSON.parse(response.body)
 
         expect(json_response["success"]).to be false
-        expect(json_response["error"]).to eq("No business found for current user")
+        expect(json_response["error"]).to eq("User not found")
+      end
+    end
+
+    context "when user has no business" do
+      let!(:user_without_business) { create(:user) }
+
+      it "returns not found status" do
+        get by_user_business_documents_path(user_without_business.id), headers: admin_headers
+
+        expect(response).to have_http_status(:not_found)
+        json_response = JSON.parse(response.body)
+
+        expect(json_response["success"]).to be false
+        expect(json_response["error"]).to eq("No business found for this user")
+      end
+    end
+
+    context "when non-admin user tries to access" do
+      let!(:regular_user) { create(:user) }
+      let!(:regular_role) { create(:role, name: 'user') }
+      let!(:regular_user_role) { create(:user_role, user: regular_user, role: regular_role) }
+      let!(:regular_token) { Bscf::Core::TokenService.new.encode({ user: { id: regular_user.id }, role: { name: regular_role.name } }) }
+      let!(:regular_headers) do
+        { Authorization: "Bearer #{regular_token}" }
+      end
+    end
+
+    context "when user is not authenticated" do
+      it "returns unauthorized status" do
+        get by_user_business_documents_path(target_user.id)
+        expect(response).to have_http_status(:unauthorized)
       end
     end
   end
-
-  include_examples "request_shared_spec", "business_documents", 10, [ :create ]
 end

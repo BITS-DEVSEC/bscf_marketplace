@@ -63,6 +63,7 @@ Rails.application.routes.draw do
   resources :business_documents do
     collection do
       get :my_business_documents
+      get "by_user/:user_id", to: "business_documents#get_by_user", as: :by_user
     end
   end
 end
