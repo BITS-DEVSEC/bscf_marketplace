@@ -30,11 +30,12 @@ class BusinessDocumentsController < ApplicationController
       return
     end
 
-    @documents = Bscf::Core::BusinessDocument.where(business: business)
+    documents = Bscf::Core::BusinessDocument.where(business: business)
     render json: {
       success: true,
       business: business,
-      documents: @documents
+      documents: ActiveModelSerializers::SerializableResource.new(documents, each_serializer: BusinessDocumentSerializer)
+
     }, status: :ok
   end
 
