@@ -1,6 +1,6 @@
 class BusinessDocumentsController < ApplicationController
   include Common
-  before_action :is_authenticated
+  # before_action :is_authenticated
 
   def my_business_documents
     business = Bscf::Core::Business.find_by(user: current_user)
@@ -30,11 +30,12 @@ class BusinessDocumentsController < ApplicationController
       return
     end
 
-    @documents = Bscf::Core::BusinessDocument.where(business: business)
+    documents = Bscf::Core::BusinessDocument.where(business: business)
     render json: {
       success: true,
       business: business,
-      documents: @documents
+      documents: ActiveModelSerializers::SerializableResource.new(documents, each_serializer: BusinessDocumentSerializer)
+
     }, status: :ok
   end
 
