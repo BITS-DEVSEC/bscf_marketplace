@@ -1,6 +1,6 @@
 class RfqItemSerializer < ActiveModel::Serializer
-  attributes :id, :quantity, :notes, :created_at, :updated_at
+  attributes :id, :quantity, :notes, :product_id, :created_at, :updated_at
 
-  belongs_to :request_for_quotation
   belongs_to :product
+  belongs_to :request_for_quotation
 end

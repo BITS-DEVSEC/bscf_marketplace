@@ -3,6 +3,58 @@ class DeliveryOrdersController < ApplicationController
   before_action :is_authenticated
   before_action :set_delivery_order, only: [ :assign_driver, :start_delivery, :complete_delivery, :cancel ]
 
+  def index
+    @delivery_orders = model_class.includes(:order, :driver, :dropoff_address, :pickup_address, :delivery_order_items)
+    
+    @delivery_orders = filter_records(@delivery_orders) if params[:q].present?
+    
+    if @delivery_orders.empty?
+      render json: { success: false, error: "No delivery orders found" }, status: :not_found
+      return
+    end
+  
+    enriched_delivery_orders = @delivery_orders.map do |delivery_order|
+      delivery_order.attributes.merge(
+        order: delivery_order.order&.attributes,
+        driver: delivery_order.driver&.attributes,
+        dropoff_address: delivery_order.dropoff_address&.attributes,
+        pickup_address: delivery_order.pickup_address&.attributes,
+        delivery_order_items: ActiveModelSerializers::SerializableResource.new(
+          delivery_order.delivery_order_items,
+          each_serializer: DeliveryOrderItemSerializer
+        )
+      )
+    end
+  
+    render json: {
+      success: true,
+      data: enriched_delivery_orders
+    }, status: :ok, each_serializer: DeliveryOrderSerializer
+  end
+
+  def show
+    @delivery_order = model_class.includes(:order, :driver, :dropoff_address, :pickup_address, :delivery_order_items)
+                                .find(params[:id])
+  
+    enriched_delivery_order = @delivery_order.attributes.merge(
+      order: @delivery_order.order&.attributes,
+      driver: @delivery_order.driver&.attributes,
+      dropoff_address: @delivery_order.dropoff_address&.attributes,
+      pickup_address: @delivery_order.pickup_address&.attributes,
+      delivery_order_items: ActiveModelSerializers::SerializableResource.new(
+        @delivery_order.delivery_order_items,
+        each_serializer: DeliveryOrderItemSerializer
+      )
+    )
+  
+    render json: {
+      success: true,
+      data: enriched_delivery_order
+    }, status: :ok , each_serializer: DeliveryOrderSerializer
+  rescue ActiveRecord::RecordNotFound
+    render json: { success: false, error: "Delivery order not found" }, status: :not_found
+  end
+
   def my_deliveries
     @delivery_orders = Bscf::Core::DeliveryOrder.includes(:order, :driver, :dropoff_address, :pickup_address)
                                              .where(driver_id: current_user.id)
@@ -67,11 +119,12 @@ class DeliveryOrdersController < ApplicationController
   end
 
   def start_delivery
-    if @delivery_order.update(status: :picked_up, delivery_start_time: Time.current)
+    ActiveRecord::Base.transaction do
+      @delivery_order.update!(status: :picked_up, delivery_start_time: Time.current)
       render json: { success: true, data: @delivery_order }, status: :ok
-    else
-      render json: { success: false, error: @delivery_order.errors.full_messages }, status: :unprocessable_entity
-    end
+    end  
+  rescue ActiveRecord::RecordInvalid => e
+    render json: { success: false, error: e.message }, status: :unprocessable_entity
   end
 
   def complete_delivery
