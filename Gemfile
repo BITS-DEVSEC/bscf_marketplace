@@ -51,6 +51,11 @@ group :development, :test do
   # Speed up test runs
   gem "spring"
   gem "spring-commands-rspec"
+
+  # For Swagger API documentation
+  gem 'rswag-api'
+  gem 'rswag-ui'
+  gem 'rswag-specs'
 end
 
 gem "bscf-core"

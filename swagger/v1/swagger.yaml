@@ -1,0 +1,1323 @@
+---
+openapi: 3.0.1
+info:
+  title: BSCF Marketplace API
+  version: v1
+  description: API documentation for BSCF Marketplace
+paths:
+  "/businesses":
+    get:
+      summary: Lists all businesses
+      tags:
+      - Businesses
+      responses:
+        '200':
+          description: businesses found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    business_type:
+                      type: string
+                    registration_number:
+                      type: string
+                    tax_number:
+                      type: string
+                    address:
+                      type: string
+                    phone:
+                      type: string
+                    email:
+                      type: string
+                    website:
+                      type: string
+                    status:
+                      type: string
+                    created_at:
+                      type: string
+                      format: datetime
+                    updated_at:
+                      type: string
+                      format: datetime
+                  required:
+                  - id
+                  - name
+                  - business_type
+                  - registration_number
+    post:
+      summary: Creates a business
+      tags:
+      - Businesses
+      parameters: []
+      responses:
+        '201':
+          description: business created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                business_type:
+                  type: string
+                registration_number:
+                  type: string
+                tax_number:
+                  type: string
+                address:
+                  type: string
+                phone:
+                  type: string
+                email:
+                  type: string
+                website:
+                  type: string
+              required:
+              - name
+              - business_type
+              - registration_number
+  "/businesses/{id}":
+    get:
+      summary: Retrieves a business
+      tags:
+      - Businesses
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: business found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  business_type:
+                    type: string
+                  registration_number:
+                    type: string
+                  tax_number:
+                    type: string
+                  address:
+                    type: string
+                  phone:
+                    type: string
+                  email:
+                    type: string
+                  website:
+                    type: string
+                  status:
+                    type: string
+                  created_at:
+                    type: string
+                    format: datetime
+                  updated_at:
+                    type: string
+                    format: datetime
+        '404':
+          description: business not found
+    put:
+      summary: Updates a business
+      tags:
+      - Businesses
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: business updated
+        '404':
+          description: business not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                business_type:
+                  type: string
+                tax_number:
+                  type: string
+                address:
+                  type: string
+                phone:
+                  type: string
+                email:
+                  type: string
+                website:
+                  type: string
+                status:
+                  type: string
+  "/businesses/verify":
+    post:
+      summary: Verify business registration
+      tags:
+      - Businesses
+      parameters: []
+      responses:
+        '200':
+          description: verification successful
+        '422':
+          description: invalid verification data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                registration_number:
+                  type: string
+                tax_number:
+                  type: string
+                documents:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+              required:
+              - registration_number
+              - documents
+  "/categories":
+    get:
+      summary: Lists all categories
+      tags:
+      - Categories
+      responses:
+        '200':
+          description: categories found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    parent_id:
+                      type: integer
+                    created_at:
+                      type: string
+                      format: datetime
+                    updated_at:
+                      type: string
+                      format: datetime
+                  required:
+                  - id
+                  - name
+    post:
+      summary: Creates a category
+      tags:
+      - Categories
+      parameters: []
+      responses:
+        '201':
+          description: category created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                parent_id:
+                  type: integer
+              required:
+              - name
+  "/categories/{id}":
+    get:
+      summary: Retrieves a category
+      tags:
+      - Categories
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: category found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  parent_id:
+                    type: integer
+                  created_at:
+                    type: string
+                    format: datetime
+                  updated_at:
+                    type: string
+                    format: datetime
+        '404':
+          description: category not found
+    put:
+      summary: Updates a category
+      tags:
+      - Categories
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: category updated
+        '404':
+          description: category not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                parent_id:
+                  type: integer
+    delete:
+      summary: Deletes a category
+      tags:
+      - Categories
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: category deleted
+        '404':
+          description: category not found
+  "/marketplace_listings":
+    get:
+      summary: Lists all marketplace listings
+      tags:
+      - Marketplace Listings
+      responses:
+        '200':
+          description: marketplace listings found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    price:
+                      type: number
+                    quantity:
+                      type: integer
+                    status:
+                      type: string
+                    created_at:
+                      type: string
+                      format: datetime
+                    updated_at:
+                      type: string
+                      format: datetime
+                  required:
+                  - id
+                  - title
+                  - price
+                  - status
+    post:
+      summary: Creates a marketplace listing
+      tags:
+      - Marketplace Listings
+      parameters: []
+      responses:
+        '201':
+          description: marketplace listing created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                price:
+                  type: number
+                quantity:
+                  type: integer
+                status:
+                  type: string
+              required:
+              - title
+              - price
+  "/marketplace_listings/{id}":
+    get:
+      summary: Retrieves a marketplace listing
+      tags:
+      - Marketplace Listings
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: marketplace listing found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  price:
+                    type: number
+                  quantity:
+                    type: integer
+                  status:
+                    type: string
+                  created_at:
+                    type: string
+                    format: datetime
+                  updated_at:
+                    type: string
+                    format: datetime
+        '404':
+          description: marketplace listing not found
+  "/marketplace_listings/my_marketplace_listings":
+    get:
+      summary: Lists user's marketplace listings
+      tags:
+      - Marketplace Listings
+      responses:
+        '200':
+          description: user's marketplace listings found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    price:
+                      type: number
+                    quantity:
+                      type: integer
+                    status:
+                      type: string
+                    created_at:
+                      type: string
+                      format: datetime
+                    updated_at:
+                      type: string
+                      format: datetime
+  "/orders":
+    get:
+      summary: Lists all orders
+      tags:
+      - Orders
+      responses:
+        '200':
+          description: orders found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    buyer_id:
+                      type: integer
+                    seller_id:
+                      type: integer
+                    quotation_id:
+                      type: integer
+                    total_amount:
+                      type: number
+                    status:
+                      type: string
+                    payment_status:
+                      type: string
+                    delivery_address:
+                      type: string
+                    delivery_date:
+                      type: string
+                      format: datetime
+                    notes:
+                      type: string
+                    created_at:
+                      type: string
+                      format: datetime
+                    updated_at:
+                      type: string
+                      format: datetime
+                  required:
+                  - id
+                  - buyer_id
+                  - seller_id
+                  - quotation_id
+                  - total_amount
+    post:
+      summary: Creates an order
+      tags:
+      - Orders
+      parameters: []
+      responses:
+        '201':
+          description: order created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quotation_id:
+                  type: integer
+                delivery_address:
+                  type: string
+                delivery_date:
+                  type: string
+                  format: datetime
+                notes:
+                  type: string
+              required:
+              - quotation_id
+              - delivery_address
+  "/orders/{id}":
+    get:
+      summary: Retrieves an order
+      tags:
+      - Orders
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: order found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  buyer_id:
+                    type: integer
+                  seller_id:
+                    type: integer
+                  quotation_id:
+                    type: integer
+                  total_amount:
+                    type: number
+                  status:
+                    type: string
+                  payment_status:
+                    type: string
+                  delivery_address:
+                    type: string
+                  delivery_date:
+                    type: string
+                    format: datetime
+                  notes:
+                    type: string
+                  created_at:
+                    type: string
+                    format: datetime
+                  updated_at:
+                    type: string
+                    format: datetime
+        '404':
+          description: order not found
+    put:
+      summary: Updates an order
+      tags:
+      - Orders
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: order updated
+        '404':
+          description: order not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                payment_status:
+                  type: string
+                delivery_address:
+                  type: string
+                delivery_date:
+                  type: string
+                  format: datetime
+                notes:
+                  type: string
+  "/orders/my_orders":
+    get:
+      summary: Lists user's orders
+      tags:
+      - Orders
+      responses:
+        '200':
+          description: user's orders found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    buyer_id:
+                      type: integer
+                    seller_id:
+                      type: integer
+                    quotation_id:
+                      type: integer
+                    total_amount:
+                      type: number
+                    status:
+                      type: string
+                    payment_status:
+                      type: string
+                    delivery_address:
+                      type: string
+                    delivery_date:
+                      type: string
+                      format: datetime
+                    notes:
+                      type: string
+                    created_at:
+                      type: string
+                      format: datetime
+                    updated_at:
+                      type: string
+                      format: datetime
+  "/products":
+    get:
+      summary: Lists all products
+      tags:
+      - Products
+      responses:
+        '200':
+          description: products found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    category_id:
+                      type: integer
+                    price:
+                      type: number
+                    quantity:
+                      type: integer
+                    status:
+                      type: string
+                    seller_id:
+                      type: integer
+                    created_at:
+                      type: string
+                      format: datetime
+                    updated_at:
+                      type: string
+                      format: datetime
+                  required:
+                  - id
+                  - name
+                  - price
+                  - category_id
+                  - seller_id
+    post:
+      summary: Creates a product
+      tags:
+      - Products
+      parameters: []
+      responses:
+        '201':
+          description: product created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                category_id:
+                  type: integer
+                price:
+                  type: number
+                quantity:
+                  type: integer
+                status:
+                  type: string
+                seller_id:
+                  type: integer
+              required:
+              - name
+              - price
+              - category_id
+              - seller_id
+  "/products/{id}":
+    get:
+      summary: Retrieves a product
+      tags:
+      - Products
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: product found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  category_id:
+                    type: integer
+                  price:
+                    type: number
+                  quantity:
+                    type: integer
+                  status:
+                    type: string
+                  seller_id:
+                    type: integer
+                  created_at:
+                    type: string
+                    format: datetime
+                  updated_at:
+                    type: string
+                    format: datetime
+        '404':
+          description: product not found
+    put:
+      summary: Updates a product
+      tags:
+      - Products
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: product updated
+        '404':
+          description: product not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                category_id:
+                  type: integer
+                price:
+                  type: number
+                quantity:
+                  type: integer
+                status:
+                  type: string
+    delete:
+      summary: Deletes a product
+      tags:
+      - Products
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: product deleted
+        '404':
+          description: product not found
+  "/products/search":
+    get:
+      summary: Search products
+      tags:
+      - Products
+      parameters:
+      - name: query
+        in: query
+        description: Search query
+        schema:
+          type: string
+      - name: category_id
+        in: query
+        required: false
+        description: Filter by category
+        schema:
+          type: integer
+      - name: min_price
+        in: query
+        required: false
+        description: Minimum price
+        schema:
+          type: number
+      - name: max_price
+        in: query
+        required: false
+        description: Maximum price
+        schema:
+          type: number
+      responses:
+        '200':
+          description: search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    category_id:
+                      type: integer
+                    price:
+                      type: number
+                    quantity:
+                      type: integer
+                    status:
+                      type: string
+                    seller_id:
+                      type: integer
+                    created_at:
+                      type: string
+                      format: datetime
+                    updated_at:
+                      type: string
+                      format: datetime
+  "/quotations":
+    get:
+      summary: Lists all quotations
+      tags:
+      - Quotations
+      responses:
+        '200':
+          description: quotations found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    rfq_id:
+                      type: integer
+                    seller_id:
+                      type: integer
+                    price_per_unit:
+                      type: number
+                    total_price:
+                      type: number
+                    delivery_time:
+                      type: integer
+                    validity_period:
+                      type: integer
+                    status:
+                      type: string
+                    notes:
+                      type: string
+                    created_at:
+                      type: string
+                      format: datetime
+                    updated_at:
+                      type: string
+                      format: datetime
+                  required:
+                  - id
+                  - rfq_id
+                  - seller_id
+                  - price_per_unit
+                  - total_price
+    post:
+      summary: Creates a quotation
+      tags:
+      - Quotations
+      parameters: []
+      responses:
+        '201':
+          description: quotation created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rfq_id:
+                  type: integer
+                price_per_unit:
+                  type: number
+                delivery_time:
+                  type: integer
+                validity_period:
+                  type: integer
+                notes:
+                  type: string
+              required:
+              - rfq_id
+              - price_per_unit
+  "/quotations/{id}":
+    get:
+      summary: Retrieves a quotation
+      tags:
+      - Quotations
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: quotation found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  rfq_id:
+                    type: integer
+                  seller_id:
+                    type: integer
+                  price_per_unit:
+                    type: number
+                  total_price:
+                    type: number
+                  delivery_time:
+                    type: integer
+                  validity_period:
+                    type: integer
+                  status:
+                    type: string
+                  notes:
+                    type: string
+                  created_at:
+                    type: string
+                    format: datetime
+                  updated_at:
+                    type: string
+                    format: datetime
+        '404':
+          description: quotation not found
+    put:
+      summary: Updates a quotation
+      tags:
+      - Quotations
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: quotation updated
+        '404':
+          description: quotation not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                price_per_unit:
+                  type: number
+                delivery_time:
+                  type: integer
+                validity_period:
+                  type: integer
+                status:
+                  type: string
+                notes:
+                  type: string
+    delete:
+      summary: Deletes a quotation
+      tags:
+      - Quotations
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: quotation deleted
+        '404':
+          description: quotation not found
+  "/quotations/my_quotations":
+    get:
+      summary: Lists seller's quotations
+      tags:
+      - Quotations
+      responses:
+        '200':
+          description: seller's quotations found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    rfq_id:
+                      type: integer
+                    seller_id:
+                      type: integer
+                    price_per_unit:
+                      type: number
+                    total_price:
+                      type: number
+                    delivery_time:
+                      type: integer
+                    validity_period:
+                      type: integer
+                    status:
+                      type: string
+                    notes:
+                      type: string
+                    created_at:
+                      type: string
+                      format: datetime
+                    updated_at:
+                      type: string
+                      format: datetime
+  "/rfqs":
+    get:
+      summary: Lists all RFQs
+      tags:
+      - RFQs
+      responses:
+        '200':
+          description: rfqs found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    buyer_id:
+                      type: integer
+                    product_id:
+                      type: integer
+                    quantity:
+                      type: integer
+                    status:
+                      type: string
+                    deadline:
+                      type: string
+                      format: datetime
+                    created_at:
+                      type: string
+                      format: datetime
+                    updated_at:
+                      type: string
+                      format: datetime
+                  required:
+                  - id
+                  - title
+                  - buyer_id
+                  - product_id
+                  - quantity
+    post:
+      summary: Creates an RFQ
+      tags:
+      - RFQs
+      parameters: []
+      responses:
+        '201':
+          description: rfq created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                product_id:
+                  type: integer
+                quantity:
+                  type: integer
+                deadline:
+                  type: string
+                  format: datetime
+              required:
+              - title
+              - product_id
+              - quantity
+  "/rfqs/{id}":
+    get:
+      summary: Retrieves an RFQ
+      tags:
+      - RFQs
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: rfq found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  buyer_id:
+                    type: integer
+                  product_id:
+                    type: integer
+                  quantity:
+                    type: integer
+                  status:
+                    type: string
+                  deadline:
+                    type: string
+                    format: datetime
+                  created_at:
+                    type: string
+                    format: datetime
+                  updated_at:
+                    type: string
+                    format: datetime
+        '404':
+          description: rfq not found
+    put:
+      summary: Updates an RFQ
+      tags:
+      - RFQs
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: rfq updated
+        '404':
+          description: rfq not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                quantity:
+                  type: integer
+                deadline:
+                  type: string
+                  format: datetime
+                status:
+                  type: string
+    delete:
+      summary: Deletes an RFQ
+      tags:
+      - RFQs
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: rfq deleted
+        '404':
+          description: rfq not found
+  "/rfqs/my_rfqs":
+    get:
+      summary: Lists user's RFQs
+      tags:
+      - RFQs
+      responses:
+        '200':
+          description: user's rfqs found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    buyer_id:
+                      type: integer
+                    product_id:
+                      type: integer
+                    quantity:
+                      type: integer
+                    status:
+                      type: string
+                    deadline:
+                      type: string
+                      format: datetime
+                    created_at:
+                      type: string
+                      format: datetime
+                    updated_at:
+                      type: string
+                      format: datetime
+servers:
+- url: "{defaultHost}"
+  variables:
+    defaultHost:
+      default: localhost:3000
