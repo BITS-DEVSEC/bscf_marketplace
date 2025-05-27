@@ -31,13 +31,41 @@ class RequestForQuotationsController < ApplicationController
   
 
   def my_rfqs
-    @rfqs = Bscf::Core::RequestForQuotation.where(user: current_user)
+    direction = params[:direction]
+    unless ['in', 'out'].include?(direction)
+      render json: { success: false, error: "Invalid direction. Must be 'in' or 'out'" }, status: :bad_request
+      return
+    end
+
+    business = Bscf::Core::Business.find_by(user: current_user)
+    unless business
+      render json: { success: false, error: "No business found for current user" }, status: :not_found
+      return
+    end
+
+    @rfqs = if direction == 'out'
+              Bscf::Core::RequestForQuotation.where(user: current_user)
+            else
+              Bscf::Core::RequestForQuotation.joins(:rfq_items)
+                .joins('INNER JOIN products ON rfq_items.product_id = products.id')
+                .where(products: { business_id: business.id })
+                .distinct
+            end
+
     if @rfqs.empty?
       render json: { success: false, error: "No RFQs found" }, status: :not_found
       return
     end
+
     @rfq_items = Bscf::Core::RfqItem.where(request_for_quotation_id: @rfqs.pluck(:id))
-    render json: { success: true, rfqs: @rfqs, rfq_items: @rfq_items, status: :ok }
+    
+    render json: { 
+      success: true, 
+      rfqs: @rfqs, 
+      rfq_items: @rfq_items, 
+      direction: direction,
+      status: :ok 
+    }
   end
 
   private

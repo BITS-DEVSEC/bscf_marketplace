@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   resources :products
   resources :request_for_quotations do
     collection do
-      get :my_rfqs
+      get 'my_rfqs/:direction', to: 'request_for_quotations#my_rfqs', as: :my_rfqs
     end
   end
   resources :rfq_items
