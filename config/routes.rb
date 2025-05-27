@@ -49,11 +49,13 @@ Rails.application.routes.draw do
   resources :delivery_order_items
   resources :delivery_orders do
     member do
-      patch :cancel
-      put :assign_driver
-      put :start_delivery
-      put :complete_delivery
+      post :assign_driver
+      post :start_delivery
+      post :complete_delivery
+      post :cancel
+      post :assign_orders
     end
+
     collection do
       get :my_deliveries
       get :assigned_deliveries

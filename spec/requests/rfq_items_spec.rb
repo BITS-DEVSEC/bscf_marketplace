@@ -25,5 +25,5 @@ RSpec.describe 'RfqItems', type: :request do
     }
   end
 
-  include_examples 'request_shared_spec', 'rfq_items', 7
+  include_examples 'request_shared_spec', 'rfq_items', 8
 end

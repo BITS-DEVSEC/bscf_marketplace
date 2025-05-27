@@ -3,17 +3,48 @@ class OrdersController < ApplicationController
   include CreatableWithItems
   before_action :is_authenticated
 
-  def my_orders
-    @orders = Bscf::Core::Order.where(ordered_by: current_user)
+  def index
+    @orders = model_class.includes(:ordered_by, :ordered_to, :quotation, :delivery_order)
+    @orders = filter_records(@orders) if params[:q].present?
+    
     if @orders.empty?
       render json: { success: false, error: "No orders found" }, status: :not_found
       return
     end
-    @order_items = Bscf::Core::OrderItem.where(order_id: @orders.pluck(:id))
-    render json: { success: true, orders: @orders, order_items: @order_items, status: :ok }
+
+    render json: {
+      success: true,
+      data: serialize(@orders, each_serializer: OrderSerializer)
+    }, status: :ok
+  end
+
+  def show
+    @order = model_class.includes(:ordered_by, :ordered_to, :quotation, :delivery_order)
+                        .find(params[:id])
+    
+    render json: {
+      success: true,
+      data: serialize(@order, serializer: OrderSerializer)
+    }, status: :ok
+  rescue ActiveRecord::RecordNotFound
+    render json: { success: false, error: "Order not found" }, status: :not_found
+  end
+
+  def my_orders
+    @orders = model_class.includes(:order_items, :delivery_order)
+                        .where(ordered_by: current_user)
+    if @orders.empty?
+      render json: { success: false, error: "No orders found" }, status: :not_found
+      return
+    end
+    render json: { success: true, data: serialize(@orders, each_serializer: OrderSerializer) }, status: :ok
   end
 
   private
+
+  def model_class
+    Bscf::Core::Order
+  end
 
   def model_params
     params.require(:payload).permit(permitted_params).merge(ordered_by_id: current_user.id)
@@ -23,9 +54,15 @@ class OrdersController < ApplicationController
     [
       :ordered_to_id,
       :quotation_id,
+      :delivery_order_id,
       :order_type,
       :status,
-      :total_amount
+      :total_amount,
+      :payment_status,
+      :payment_method,
+      :payment_reference,
+      :payment_date,
+      :notes
     ]
   end
 
