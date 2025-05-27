@@ -23,6 +23,9 @@ Rails.application.routes.draw do
   end
   resources :rfq_items
   resources :quotations do
+    member do
+      post :create_order
+    end
     collection do
       get :my_quotations
     end
