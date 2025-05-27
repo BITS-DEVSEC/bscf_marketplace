@@ -8,6 +8,10 @@ class DeliveryOrderItemsController < ApplicationController
     Bscf::Core::DeliveryOrderItem
   end
 
+  def set_clazz
+    @clazz = model_class
+  end
+
   def model_params
     params.require(:payload).permit(permitted_params)
   end
