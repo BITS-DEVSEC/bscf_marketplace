@@ -24,7 +24,9 @@ class MarketplaceListingsController < ApplicationController
       :status,
       :allow_partial_match,
       :expires_at,
-      :address_id
+      :address_id,
+      :product_id,
+      :price
     ]
   end
 end
