@@ -7,8 +7,10 @@ RSpec.describe "MarketplaceListings", type: :request do
       listing_type: "buy",
       status: "open",
       allow_partial_match: true,
+      price: Faker::Commerce.price,
       expires_at: DateTime.now + 1.day,
-      address_id: create(:address).id
+      address_id: create(:address).id,
+      product_id: create(:product).id,
     }
   end
 
