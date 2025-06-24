@@ -1,20 +1,16 @@
 class BusinessDocumentsController < ApplicationController
   include Common
   before_action :is_authenticated
+  before_action :is_admin, only: [:get_by_user]
 
   def my_business_documents
-    business = Bscf::Core::Business.find_by(user: current_user)
-    unless business
-      render json: { success: false, error: "No business found for current user" }, status: :not_found
-      return
-    end
+    documents = Bscf::Core::BusinessDocument.where(user: current_user)
 
-    @documents = Bscf::Core::BusinessDocument.where(business: business)
-    if @documents.empty?
+    if documents.empty?
       render json: { success: false, error: "No documents found" }, status: :not_found
-      return
+    else
+      render json: { success: true, data: documents }, status: :ok
     end
-    render json: { success: true, data: @documents }, status: :ok
   end
 
   def get_by_user
@@ -24,25 +20,19 @@ class BusinessDocumentsController < ApplicationController
       return
     end
 
-    business = Bscf::Core::Business.find_by(user: user)
-    unless business
-      render json: { success: false, error: "No business found for this user" }, status: :not_found
-      return
-    end
+    documents = Bscf::Core::BusinessDocument.where(user: user)
 
-    documents = Bscf::Core::BusinessDocument.where(business: business)
     render json: {
       success: true,
-      business: business,
-      documents: ActiveModelSerializers::SerializableResource.new(documents, each_serializer: BusinessDocumentSerializer)
-
+      user: user,
+      documents: ActiveModelSerializers::SerializableResource.new(documents)
     }, status: :ok
   end
 
   private
 
   def is_admin
-    unless current_user.roles.name == "admin"
+    unless current_user.roles.exists?(name: "admin")
       render json: { success: false, error: "Unauthorized access" }, status: :forbidden
       return false
     end
@@ -55,7 +45,7 @@ class BusinessDocumentsController < ApplicationController
 
   def permitted_params
     [
-      :business_id,
+      :user_id,
       :document_number,
       :document_name,
       :document_description,
