@@ -1,7 +1,7 @@
 class BusinessDocumentsController < ApplicationController
   include Common
   before_action :is_authenticated
-  before_action :is_admin, only: [:get_by_user]
+  before_action :is_admin, only: [ :get_by_user ]
 
   def my_business_documents
     documents = Bscf::Core::BusinessDocument.where(user: current_user)

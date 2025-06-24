@@ -21,8 +21,8 @@ class QuotationsController < ApplicationController
 
   def create_order
     @quotation = Bscf::Core::Quotation.find(params[:id])
-    
-    order_params = { 
+
+    order_params = {
       ordered_by_id: current_user.id,
       ordered_to_id: @quotation.business.user_id,
       quotation_id: @quotation.id,
@@ -44,7 +44,7 @@ class QuotationsController < ApplicationController
           unit_price: quotation_item.unit_price,
           subtotal: quotation_item.subtotal
         }
-        
+
         Bscf::Core::OrderItem.create!(order_item_params)
       end
 

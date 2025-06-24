@@ -6,7 +6,7 @@ class OrdersController < ApplicationController
   def index
     @orders = model_class.includes(:ordered_by, :ordered_to, :quotation, :delivery_order)
     @orders = filter_records(@orders) if params[:q].present?
-    
+
     if @orders.empty?
       render json: { success: false, error: "No orders found" }, status: :not_found
       return
@@ -21,7 +21,7 @@ class OrdersController < ApplicationController
   def show
     @order = model_class.includes(:ordered_by, :ordered_to, :quotation, :delivery_order)
                         .find(params[:id])
-    
+
     render json: {
       success: true,
       data: serialize(@order, serializer: OrderSerializer)

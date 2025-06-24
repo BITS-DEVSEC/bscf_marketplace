@@ -5,8 +5,8 @@ Rails.application.routes.draw do
     end
   end
   # Mount Swagger documentation endpoints
-  mount Rswag::Ui::Engine => '/api-docs'
-  mount Rswag::Api::Engine => '/api-docs'
+  mount Rswag::Ui::Engine => "/api-docs"
+  mount Rswag::Api::Engine => "/api-docs"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   resources :products
   resources :request_for_quotations do
     collection do
-      get 'my_rfqs/:direction', to: 'request_for_quotations#my_rfqs', as: :my_rfqs
+      get "my_rfqs/:direction", to: "request_for_quotations#my_rfqs", as: :my_rfqs
     end
   end
   resources :rfq_items

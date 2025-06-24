@@ -53,9 +53,9 @@ group :development, :test do
   gem "spring-commands-rspec"
 
   # For Swagger API documentation
-  gem 'rswag-api'
-  gem 'rswag-ui'
-  gem 'rswag-specs'
+  gem "rswag-api"
+  gem "rswag-ui"
+  gem "rswag-specs"
 end
 
 gem "bscf-core"
