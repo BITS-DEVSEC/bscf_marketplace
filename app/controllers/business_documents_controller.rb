@@ -46,6 +46,7 @@ class BusinessDocumentsController < ApplicationController
   def permitted_params
     [
       :user_id,
+      :document_type,
       :document_number,
       :document_name,
       :document_description,
