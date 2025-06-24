@@ -49,23 +49,6 @@ Rails.application.routes.draw do
       get :my_business
     end
   end
-  resources :delivery_order_items
-  resources :delivery_orders do
-    member do
-      post :assign_driver
-      post :start_delivery
-      post :complete_delivery
-      post :cancel
-      post :assign_orders
-    end
-
-    collection do
-      get :my_deliveries
-      get :assigned_deliveries
-      get :daily_aggregates
-      get :monthly_aggregates
-    end
-  end
 
   resources :vehicles
 
