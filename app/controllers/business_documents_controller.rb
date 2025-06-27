@@ -32,7 +32,7 @@ class BusinessDocumentsController < ApplicationController
   private
 
   def is_admin
-    unless current_user.roles.exists?(name: "admin")
+    unless current_user.roles.exists?(name: "Admin")
       render json: { success: false, error: "Unauthorized access" }, status: :forbidden
       return false
     end
