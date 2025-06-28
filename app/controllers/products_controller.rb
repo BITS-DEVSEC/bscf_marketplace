@@ -2,7 +2,7 @@ class ProductsController < ApplicationController
   include Common
 
   def includes
-    [:category, :thumbnail_attachment, :images_attachments]
+    [ :category, :thumbnail_attachment, :images_attachments ]
   end
 
   private

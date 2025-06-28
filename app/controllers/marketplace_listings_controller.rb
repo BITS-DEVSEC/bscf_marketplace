@@ -12,7 +12,7 @@ class MarketplaceListingsController < ApplicationController
   end
 
   def includes
-    [:user, :address]
+    [ :user, :address ]
   end
 
   private

@@ -2,7 +2,7 @@ class VehiclesController < ApplicationController
   include Common
 
   def includes
-    [:driver]
+    [ :driver ]
   end
 
   private

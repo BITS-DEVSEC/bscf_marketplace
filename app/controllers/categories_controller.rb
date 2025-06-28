@@ -2,7 +2,7 @@ class CategoriesController < ApplicationController
   include Common
 
   def includes
-    [:parent]
+    [ :parent ]
   end
 
   private

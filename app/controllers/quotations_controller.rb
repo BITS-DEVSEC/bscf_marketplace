@@ -66,7 +66,7 @@ class QuotationsController < ApplicationController
   end
 
   def includes
-    [:request_for_quotation, :business, :quotation_items]
+    [ :request_for_quotation, :business, :quotation_items ]
   end
 
   private

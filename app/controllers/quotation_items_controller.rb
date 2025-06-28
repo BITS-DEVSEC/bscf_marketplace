@@ -2,7 +2,7 @@ class QuotationItemsController < ApplicationController
   include Common
 
   def includes
-    [:quotation, :rfq_item, product: [:thumbnail_attachment, :images_attachments]]
+    [ :quotation, :rfq_item, product: [ :thumbnail_attachment, :images_attachments ] ]
   end
 
   private
