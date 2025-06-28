@@ -11,6 +11,10 @@ class MarketplaceListingsController < ApplicationController
     render json: { success: true, data: @marketplace_listings, status: :ok }
   end
 
+  def includes
+    [:user, :address]
+  end
+
   private
 
   def model_params
