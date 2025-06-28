@@ -65,6 +65,10 @@ class QuotationsController < ApplicationController
     render json: { success: false, error: e.message }, status: :unprocessable_entity
   end
 
+  def includes
+    [ :request_for_quotation, :business, :quotation_items ]
+  end
+
   private
 
   def model_params

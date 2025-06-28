@@ -21,7 +21,7 @@ module Common
         data = incoming
       end
     else
-      data = @clazz.all
+      data = @clazz.all.includes(includes)
     end
 
     data = filter_records(data) if params[:q].present?
@@ -139,4 +139,8 @@ module Common
 
   # This method should be overridden by respective child controllers
   def model_params; end
+
+  def includes
+    []
+  end
 end

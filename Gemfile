@@ -56,6 +56,8 @@ group :development, :test do
   gem "rswag-api"
   gem "rswag-ui"
   gem "rswag-specs"
+
+  gem "bullet"
 end
 
 gem "bscf-core"
