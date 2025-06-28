@@ -1,6 +1,10 @@
 class ProductsController < ApplicationController
   include Common
 
+  def includes
+    [:category, :thumbnail_attachment, :images_attachments]
+  end
+
   private
 
   def model_params
