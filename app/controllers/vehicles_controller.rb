@@ -1,6 +1,10 @@
 class VehiclesController < ApplicationController
   include Common
 
+  def includes
+    [:driver]
+  end
+
   private
 
   def model_params
