@@ -41,6 +41,10 @@ class WholesalerProductsController < ApplicationController
     }
   end
 
+  def includes
+    [:business, product: [:thumbnail_attachment, :images_attachments]]
+  end
+
   private
 
   def model_params
