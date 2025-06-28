@@ -1,6 +1,10 @@
 class QuotationItemsController < ApplicationController
   include Common
 
+  def includes
+    [:quotation, :rfq_item, product: [:thumbnail_attachment, :images_attachments]]
+  end
+
   private
 
   def model_params
