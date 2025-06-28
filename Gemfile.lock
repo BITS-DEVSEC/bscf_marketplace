@@ -91,7 +91,7 @@ GEM
       msgpack (~> 1.2)
     brakeman (7.0.2)
       racc
-    bscf-core (0.4.7)
+    bscf-core (0.4.8)
       active_model_serializers
       ancestry (~> 4.1.0)
       bcrypt (~> 3.1)
