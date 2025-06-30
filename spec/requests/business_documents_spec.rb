@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "BusinessDocuments", type: :request do
   describe "GET /business_documents/by_user/:user_id" do
     let!(:admin_user) { create(:user) }
-    let!(:admin_role) { create(:role, name: 'admin') }
+    let!(:admin_role) { create(:role, name: 'Admin') }
     let!(:admin_user_role) { create(:user_role, user: admin_user, role: admin_role) }
     let!(:admin_token) do
       Bscf::Core::TokenService.new.encode({ user: { id: admin_user.id }, role: { name: admin_role.name } })
@@ -55,7 +55,7 @@ RSpec.describe "BusinessDocuments", type: :request do
 
     context "when non-admin user tries to access" do
       let!(:regular_user) { create(:user) }
-      let!(:regular_role) { create(:role, name: 'user') }
+      let!(:regular_role) { create(:role, name: 'User') }
       let!(:regular_user_role) { create(:user_role, user: regular_user, role: regular_role) }
       let!(:regular_token) do
         Bscf::Core::TokenService.new.encode({ user: { id: regular_user.id }, role: { name: regular_role.name } })
