@@ -4,12 +4,12 @@ class BusinessDocumentsController < ApplicationController
   before_action :is_admin, only: [ :get_by_user ]
 
   def my_business_documents
-    documents = Bscf::Core::BusinessDocument.where(user: current_user)
+    documents = Bscf::Core::BusinessDocument.where(user: current_user).includes([ :user, :file_attachment ])
 
     if documents.empty?
       render json: { success: false, error: "No documents found" }, status: :not_found
     else
-      render json: { success: true, data: documents }, status: :ok
+      render json: { success: true, data: serialize(documents) }, status: :ok
     end
   end
 
@@ -20,7 +20,7 @@ class BusinessDocumentsController < ApplicationController
       return
     end
 
-    documents = Bscf::Core::BusinessDocument.where(user: user)
+    documents = Bscf::Core::BusinessDocument.where(user: user).includes([ :user, :file_attachment ])
 
     render json: {
       success: true,
