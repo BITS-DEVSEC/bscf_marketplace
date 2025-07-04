@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   resources :request_for_quotations do
     collection do
       get "my_rfqs/:direction", to: "request_for_quotations#my_rfqs", as: :my_rfqs
+      post :create_with_items 
     end
   end
   resources :rfq_items
@@ -28,6 +29,7 @@ Rails.application.routes.draw do
     end
     collection do
       get :my_quotations
+      post :create_with_items
     end
   end
   resources :quotation_items

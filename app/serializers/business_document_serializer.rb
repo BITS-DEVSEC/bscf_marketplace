@@ -15,6 +15,9 @@ class BusinessDocumentSerializer < ActiveModel::Serializer
 
   def file_url
     return nil unless object.file.attached?
-    rails_blob_url(object.file, only_path: true)
+    
+    ActiveStorage::Current.set(url_options: { host: "snf.bitscollege.edu.et", protocol: "https", script_name: "/marketplace" }) do
+      object.file.url
+    end
   end
 end
