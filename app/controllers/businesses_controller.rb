@@ -11,6 +11,15 @@ class BusinessesController < ApplicationController
     render json: { success: true, data: @business }, status: :ok
   end
 
+  def has_business
+    @business = Bscf::Core::Business.find_by(user: current_user)
+    if @business
+      render json: { success: true, has_business: true, business: @business }, status: :ok
+    else
+      render json: { success: true, has_business: false }, status: :ok
+    end
+  end
+
   private
 
   def model_params
