@@ -53,5 +53,42 @@ RSpec.describe "Businesses", type: :request do
     end
   end
 
+  describe "GET /has_business" do
+    let!(:user) { create(:user) }
+    let!(:role) { create(:role) }
+    let!(:user_role) { create(:user_role, user: user, role: role) }
+    let!(:token) { Bscf::Core::TokenService.new.encode({ user: { id: user.id }, role: { name: role.name } }) }
+    let!(:headers) do
+      { Authorization: "Bearer #{token}" }
+    end
+
+    context "when user has a business" do
+      let!(:business) { create(:business, user: user) }
+
+      it "returns true" do
+        get "/businesses/has_business", headers: headers
+
+        expect(response).to have_http_status(:ok)
+        json_response = JSON.parse(response.body)
+
+        expect(json_response["success"]).to be true
+        expect(json_response["has_business"]).to be true
+        expect(json_response["business"]["id"]).to eq(business.id)
+      end
+    end
+
+    context "when user does not have a business" do
+      it "returns false" do
+        get "/businesses/has_business", headers: headers
+
+        expect(response).to have_http_status(:ok)
+        json_response = JSON.parse(response.body)
+
+        expect(json_response["success"]).to be true
+        expect(json_response["has_business"]).to be false
+      end
+    end
+  end
+
   include_examples "request_shared_spec", "businesses", 9
 end
